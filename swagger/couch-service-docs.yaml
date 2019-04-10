@@ -1,0 +1,63 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: My API documentation
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+basePath: /v1.0
+tags:
+- name: public
+  description: Operations available to regular developers
+- name: admins
+  description: Secured Admin-only calls
+schemes:
+- http
+paths:
+  /products/getProduct:
+    get:
+      tags:
+      - public
+      operationId: api.products.read_product
+      parameters: []
+      responses:
+        200:
+          description: Fetch a product from the database
+          schema:
+            $ref: '#/definitions/Product'
+
+  /products/createProduct:
+    post:
+      tags:
+      - public
+      operationId: api.products.create_product
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: productPayload
+        description: Inventory product to add
+        schema:
+          $ref: '#/definitions/Product'
+      responses:
+        201:
+          description: Successfully added product to the DB
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+definitions:
+  Product:
+    type: object
+    properties:
+      _id:
+        type: string
+      prodname:
+        type: string
+      catagory:
+        type: string
+      quantity:
+        type: number
